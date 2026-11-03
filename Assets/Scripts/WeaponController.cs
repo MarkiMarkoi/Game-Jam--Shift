@@ -15,7 +15,13 @@ public class WeaponController : MonoBehaviour
             return;
         }
 
-        Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
+        GameObject newProjectile = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
+
+        Projectile projectile = newProjectile.GetComponent<Projectile>();
+        if (projectile != null) 
+        { 
+            projectile.SetOwner(gameObject);
+        }
 
         nextFireTime = Time.time + fireCooldown;
     }
