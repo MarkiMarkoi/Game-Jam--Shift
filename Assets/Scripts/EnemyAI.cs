@@ -7,6 +7,9 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private Transform player;
     [SerializeField] private float attackRange = 8f;
     [SerializeField] private WeaponController weapon;
+    [SerializeField] private float eyeHeight = 1.0f;
+    [SerializeField] private float rotationSpeed = 10f;
+    [SerializeField] private LayerMask obstacleMask;
 
     private NavMeshAgent agent;
 
@@ -25,10 +28,13 @@ public class EnemyAI : MonoBehaviour
 
         float distance = Vector3.Distance(transform.position, player.position);
 
-        if (distance > attackRange) 
+        bool canSeePlayer = CanSeePlayer();
+
+        if (distance > attackRange || !CanSeePlayer()) 
         { 
             agent.isStopped = false;
             agent.SetDestination(player.position);
+            LookAtMovement();
         }
         else
         {
@@ -49,7 +55,35 @@ public class EnemyAI : MonoBehaviour
 
         if (direction.sqrMagnitude > 0.001f)
         {
-            transform.rotation = Quaternion.LookRotation(direction);
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Slerp(transform.rotation,targetRotation, rotationSpeed * Time.deltaTime);
+        }
+    }
+
+    private bool CanSeePlayer() 
+    { 
+        Vector3 origin = transform.position + Vector3.up * eyeHeight;
+
+        Vector3 target = player.position + Vector3.up * eyeHeight;
+
+        Vector3 direction = target - origin;
+
+        Debug.DrawRay(origin,direction, Color.yellow);
+
+        bool wallHit = Physics.Raycast(origin,direction.normalized, direction.magnitude,obstacleMask);
+
+        return !wallHit;
+    }
+
+    private void LookAtMovement()
+    {
+        Vector3 direction = agent.velocity;
+        direction.y = 0f;
+        if(direction.sqrMagnitude > 0.001f)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
         }
     }
 }
