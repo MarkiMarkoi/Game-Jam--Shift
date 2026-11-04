@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -5,12 +6,21 @@ using UnityEngine.AI;
 public class EnemyAI : MonoBehaviour
 {
     [SerializeField] private Transform player;
+
     [SerializeField] private float attackRange = 8f;
+    [SerializeField] private float minimumDistance = 3f;
+    [SerializeField] private float retreatDistance = 4f;
+
     [SerializeField] private WeaponController weapon;
+
     [SerializeField] private float eyeHeight = 1.0f;
     [SerializeField] private float rotationSpeed = 10f;
+
     [SerializeField] private LayerMask obstacleMask;
 
+    [SerializeField] private bool canRetreat = false;
+
+    private bool isRetreating = false;
     private NavMeshAgent agent;
 
     private void Awake()
@@ -25,27 +35,49 @@ public class EnemyAI : MonoBehaviour
         {
             return;
         }
-
+        if (isRetreating)
+        {
+            UpdateRetreat();
+            return;
+        }
         float distance = Vector3.Distance(transform.position, player.position);
-
-        bool canSeePlayer = CanSeePlayer();
-
         if (distance > attackRange || !CanSeePlayer()) 
         { 
             agent.isStopped = false;
             agent.SetDestination(player.position);
             LookAtMovement();
         }
+        else if(minimumDistance > distance && canRetreat)
+        {
+            SeekDistance();
+        }
         else
         {
-            agent.isStopped = true;
-            LookAtPlayer();
-
-            if (weapon != null) 
-            { 
-                weapon.Shoot();
-            }
+            AttackPlayer();
         }
+    }
+
+    private void UpdateRetreat()
+    {
+        if (agent.pathPending)
+        {
+            return;
+        }
+
+        if (agent.pathStatus == NavMeshPathStatus.PathInvalid ||
+            agent.pathStatus == NavMeshPathStatus.PathPartial)
+        {
+            isRetreating = false;
+            AttackPlayer();
+            return;
+        }
+
+        if (agent.hasPath &&
+            agent.remainingDistance <= agent.stoppingDistance + 0.2f)
+        {
+            isRetreating = false;
+        }
+
     }
 
     private void LookAtPlayer()
@@ -84,6 +116,45 @@ public class EnemyAI : MonoBehaviour
             Quaternion targetRotation = Quaternion.LookRotation(direction);
 
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+        }
+    }
+
+    private void SeekDistance()
+    {
+        Vector3 retreatDirection = (transform.position - player.position).normalized;
+
+        Vector3 retreatPosition = transform.position + retreatDirection * retreatDistance;
+        if (NavMesh.SamplePosition(retreatPosition, out NavMeshHit hit, 2f, NavMesh.AllAreas))
+        {
+            float currentDistance = Vector3.Distance(transform.position, player.position);
+            float newDistance = Vector3.Distance(player.position, hit.position);
+
+            if (newDistance > currentDistance + 1f)
+            {
+                agent.isStopped = false;
+                if (agent.SetDestination(hit.position))
+                {
+                    isRetreating = true;
+                }
+            }
+            else
+            {
+                AttackPlayer();
+            }
+        }
+        else
+        {
+            AttackPlayer();
+        }
+    }
+
+    private void AttackPlayer()
+    {
+        agent.isStopped = true;
+        LookAtPlayer();
+        if(weapon != null && CanSeePlayer())
+        {
+            weapon.Shoot();
         }
     }
 }
