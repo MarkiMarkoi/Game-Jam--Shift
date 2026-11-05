@@ -27,4 +27,13 @@ public class Health : MonoBehaviour
             OnDeath?.Invoke();
         }        
     }
+
+    public void Revive(float healthPercentage)
+    {
+        float percentage = Mathf.Clamp01(healthPercentage);
+
+        currentHealth = maxHealth * percentage;
+
+        isDead = false;
+    }
 }

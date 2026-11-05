@@ -11,18 +11,21 @@ public class ShiftTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        BodyShiftController controller = other.GetComponentInParent<BodyShiftController>();
-        if (controller != null) 
+        PlayerBody playerBody = other.GetComponentInParent<PlayerBody>();
+
+        if (playerBody != null && playerBody.Controller != null)
         {
-            controller.SetTarget(shiftableRobot);
+            playerBody.Controller.SetTarget(shiftableRobot);
         }
     }
+
     private void OnTriggerExit(Collider other)
     {
-        BodyShiftController controller = other.GetComponentInParent<BodyShiftController>();
-        if (controller != null)
+        PlayerBody playerBody = other.GetComponentInParent<PlayerBody>();
+
+        if (playerBody != null && playerBody.Controller != null)
         {
-            controller.ClearTarget(shiftableRobot);
+            playerBody.Controller.ClearTarget(shiftableRobot);
         }
     }
 }

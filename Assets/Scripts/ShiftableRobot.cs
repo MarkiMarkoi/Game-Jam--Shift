@@ -48,4 +48,17 @@ public class ShiftableRobot : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+    public void TakeControl()
+    {
+        isAvailableForShift = false;
+
+        navMeshAgent.enabled = false;
+        enemyAI.enabled = false;
+        health.Revive(0.5f);
+        GetComponent<CharacterController>().enabled = true;
+        GetComponent <Movement>().enabled = true;
+        GetComponent<PlayerCombat>().enabled = true;
+    }
+
 }
