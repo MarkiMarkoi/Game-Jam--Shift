@@ -5,7 +5,7 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent))]
 public class EnemyAI : MonoBehaviour
 {
-    [SerializeField] private Transform player;
+   // [SerializeField] private Transform player;
 
     [SerializeField] private float attackRange = 8f;
     [SerializeField] private float minimumDistance = 3f;
@@ -22,16 +22,18 @@ public class EnemyAI : MonoBehaviour
 
     private bool isRetreating = false;
     private NavMeshAgent agent;
+    private BodyShiftController bodyShiftController;
 
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
         agent.updateRotation = false;
+        bodyShiftController = FindFirstObjectByType<BodyShiftController>();
     }
 
     private void Update()
     {
-        if(player == null || !agent.isOnNavMesh)
+        if(bodyShiftController == null || !agent.isOnNavMesh)
         {
             return;
         }
@@ -40,11 +42,11 @@ public class EnemyAI : MonoBehaviour
             UpdateRetreat();
             return;
         }
-        float distance = Vector3.Distance(transform.position, player.position);
+        float distance = Vector3.Distance(transform.position, bodyShiftController.CurrentPlayer.position);
         if (distance > attackRange || !CanSeePlayer()) 
         { 
             agent.isStopped = false;
-            agent.SetDestination(player.position);
+            agent.SetDestination(bodyShiftController.CurrentPlayer.position);
             LookAtMovement();
         }
         else if(minimumDistance > distance && canRetreat)
@@ -82,7 +84,7 @@ public class EnemyAI : MonoBehaviour
 
     private void LookAtPlayer()
     {
-        Vector3 direction = player.position - transform.position;
+        Vector3 direction = bodyShiftController.CurrentPlayer.position - transform.position;
         direction.y = 0f;
 
         if (direction.sqrMagnitude > 0.001f)
@@ -96,7 +98,7 @@ public class EnemyAI : MonoBehaviour
     { 
         Vector3 origin = transform.position + Vector3.up * eyeHeight;
 
-        Vector3 target = player.position + Vector3.up * eyeHeight;
+        Vector3 target = bodyShiftController.CurrentPlayer.position + Vector3.up * eyeHeight;
 
         Vector3 direction = target - origin;
 
@@ -121,13 +123,13 @@ public class EnemyAI : MonoBehaviour
 
     private void SeekDistance()
     {
-        Vector3 retreatDirection = (transform.position - player.position).normalized;
+        Vector3 retreatDirection = (transform.position - bodyShiftController.CurrentPlayer.position).normalized;
 
         Vector3 retreatPosition = transform.position + retreatDirection * retreatDistance;
         if (NavMesh.SamplePosition(retreatPosition, out NavMeshHit hit, 2f, NavMesh.AllAreas))
         {
-            float currentDistance = Vector3.Distance(transform.position, player.position);
-            float newDistance = Vector3.Distance(player.position, hit.position);
+            float currentDistance = Vector3.Distance(transform.position, bodyShiftController.CurrentPlayer.position);
+            float newDistance = Vector3.Distance(bodyShiftController.CurrentPlayer.position, hit.position);
 
             if (newDistance > currentDistance + 1f)
             {

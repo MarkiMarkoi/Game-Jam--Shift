@@ -4,7 +4,7 @@ public class Health : MonoBehaviour
 {
     [SerializeField] private float maxHealth = 100f;
 
-    private float currentHealth;
+    [SerializeField] private float currentHealth;
     private bool isDead;
 
     public event Action OnDeath;

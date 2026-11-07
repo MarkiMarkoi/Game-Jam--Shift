@@ -151,7 +151,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 20
   lifeTime: 6
-  damage: 10
+  damage: 40
   useDistanceDamage: 1
   maxDistance: 12
   maxDamageMultiplier: 2.5
