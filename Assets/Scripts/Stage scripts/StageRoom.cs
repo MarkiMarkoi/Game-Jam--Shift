@@ -22,10 +22,13 @@ public class StageRoom : MonoBehaviour
     {
         remainingEnemies--;
         Debug.Log("Remaining Enemies: " + remainingEnemies);
+        FinishSpawning();
+    }
 
-        if (remainingEnemies == 0) 
+    public void FinishSpawning()
+    {
+        if(remainingEnemies == 0)
         {
-            Debug.Log("Stage Cleared!");
             teleporter.Unlock();
         }
     }

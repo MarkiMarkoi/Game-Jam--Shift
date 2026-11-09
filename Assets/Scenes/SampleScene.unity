@@ -1033,10 +1033,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stage: 0
-  rooms:
-  - {fileID: 8089114824726549309, guid: 95035223384693740afd9d82f32e5b81, type: 3}
-  - {fileID: 8089114824726549309, guid: 0472309b9c052c54b876fa641ad67577, type: 3}
-  enemyPrefab: {fileID: 3033364738222120218, guid: 4831bac96b789544f983cf2b649325da, type: 3}
+  stages:
+  - roomPrefab: {fileID: 8089114824726549309, guid: 95035223384693740afd9d82f32e5b81, type: 3}
+    enemyCount: 3
+    enemyPrefabs:
+    - {fileID: 3033364738222120218, guid: 4831bac96b789544f983cf2b649325da, type: 3}
+    - {fileID: 3033364738222120218, guid: 69778e199ffd6694fa31711bb16ba918, type: 3}
+  - roomPrefab: {fileID: 8089114824726549309, guid: 95035223384693740afd9d82f32e5b81, type: 3}
+    enemyCount: 0
+    enemyPrefabs: []
+  - roomPrefab: {fileID: 8089114824726549309, guid: 0472309b9c052c54b876fa641ad67577, type: 3}
+    enemyCount: 2
+    enemyPrefabs:
+    - {fileID: 3033364738222120218, guid: 4831bac96b789544f983cf2b649325da, type: 3}
+    - {fileID: 3033364738222120218, guid: 69778e199ffd6694fa31711bb16ba918, type: 3}
 --- !u!4 &1997178635
 Transform:
   m_ObjectHideFlags: 0
