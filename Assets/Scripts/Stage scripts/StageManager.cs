@@ -39,6 +39,8 @@ public class StageManager : MonoBehaviour
             foreach(Transform point in stageroom.EnemySpawnPoints)
             {
                 GameObject enemy = Instantiate(enemyPrefab, point.position, point.rotation, currentRoom.transform);
+                Health enemyHealth = enemy.GetComponent<Health>();
+                stageroom.RegisterEnemy(enemyHealth);
             }
         }
     }

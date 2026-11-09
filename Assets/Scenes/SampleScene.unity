@@ -1035,7 +1035,7 @@ MonoBehaviour:
   stage: 0
   rooms:
   - {fileID: 8089114824726549309, guid: 95035223384693740afd9d82f32e5b81, type: 3}
-  - {fileID: 8089114824726549309, guid: 2fb3d99b1f7b4474fa3bee4d874a6773, type: 3}
+  - {fileID: 8089114824726549309, guid: 0472309b9c052c54b876fa641ad67577, type: 3}
   enemyPrefab: {fileID: 3033364738222120218, guid: 4831bac96b789544f983cf2b649325da, type: 3}
 --- !u!4 &1997178635
 Transform:
