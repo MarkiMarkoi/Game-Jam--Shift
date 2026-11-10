@@ -39,7 +39,9 @@ public class Projectile : MonoBehaviour
             return;
         }
         Health health = other.GetComponentInParent<Health>();
-        if (health != null) 
+        PlayerBody ownerIsPlayer = owner.GetComponent<PlayerBody>();
+        PlayerBody targetIsPlayer = other.GetComponentInParent<PlayerBody>();
+        if (health != null && ownerIsPlayer != targetIsPlayer) 
         {
             float distance = Vector3.Distance(startPosition, transform.position);
             float finalDamage = damage;

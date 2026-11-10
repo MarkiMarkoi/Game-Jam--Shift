@@ -9,10 +9,13 @@ public class ShiftableRobot : MonoBehaviour
     private NavMeshAgent navMeshAgent;
     private bool isAvailableForShift;
 
+    public PlayerBody playerBody;
+
     [SerializeField] private float takeoverWindow = 5f;
     public bool IsAvailableForShift => isAvailableForShift;
     private void Awake()
     {
+        playerBody = GetComponent<PlayerBody>();
         health = GetComponent<Health>();
         enemyAI = GetComponent<EnemyAI>();
         navMeshAgent = GetComponent<NavMeshAgent>();
@@ -28,6 +31,10 @@ public class ShiftableRobot : MonoBehaviour
 
     private void EnterDyingState()
     {
+        if (playerBody != null && playerBody.Controller != null) 
+        {
+            return;
+        }
         navMeshAgent.isStopped = true;
         enemyAI.enabled = false;
         navMeshAgent.enabled = false;
