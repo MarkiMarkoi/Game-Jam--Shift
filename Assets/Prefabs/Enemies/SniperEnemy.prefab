@@ -103,6 +103,7 @@ GameObject:
   - component: {fileID: 8502157365948641959}
   - component: {fileID: 3476907511357985312}
   - component: {fileID: 2426892195934108788}
+  - component: {fileID: 9026685617017865983}
   m_Layer: 6
   m_Name: SniperEnemy
   m_TagString: Untagged
@@ -286,6 +287,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 721704d3b3377d142873ccc05d004ee9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &9026685617017865983
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3033364738222120218}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd9d9f9c8a9ab1147aa03104fc53ad3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &5821956085319499465

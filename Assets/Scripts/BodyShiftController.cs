@@ -14,20 +14,26 @@ public class BodyShiftController : MonoBehaviour
 
     private bool isShifting;
     private ShiftableRobot pendingRobot;
+    private GameManager gameManager;
+    private Health playerHealth;
     private void Awake()
     {
         currentRobot.GetComponent<PlayerBody>().SetController(this);
+        playerHealth = currentRobot.GetComponent<Health>();
         transition = GetComponent<ShiftTransition>();
+        gameManager = FindFirstObjectByType<GameManager>();
     }
     private void OnEnable()
     {
         shiftInput.action.Enable();
         transition.OnTransitionComplete += CompleteBodyShift;
+        playerHealth.OnDeath += HandlePlayerDeath;
     }
     private void OnDisable()
     {
         shiftInput.action.Disable();
         transition.OnTransitionComplete -= CompleteBodyShift;
+        playerHealth.OnDeath -= HandlePlayerDeath;
     }
     private void Update()
     {
@@ -84,16 +90,37 @@ public class BodyShiftController : MonoBehaviour
 
     private void CompleteBodyShift()
     {
+        playerHealth.OnDeath -= HandlePlayerDeath;
+
         currentRobot.GetComponent<PlayerBody>().SetController(null);
         pendingRobot.GetComponent<PlayerBody>().SetController(this);
+
+        playerHealth = pendingRobot.GetComponent<Health>();
+        playerHealth.OnDeath += HandlePlayerDeath;
+
         playerCamera.Follow = pendingRobot.transform;
+
         Destroy(currentRobot);
+
         currentRobot = pendingRobot.gameObject;
         pendingRobot.TakeControl();
+
         targetRobot = null;
         pendingRobot = null;
-        Time.timeScale = 1f;
         isShifting = false;
+
+        Time.timeScale = 1f;
+
         Debug.Log("Transition complete");
+    }
+
+    private void HandlePlayerDeath()
+    {
+        Movement playerMovement = currentRobot.GetComponent<Movement>();
+        if (playerMovement != null) 
+        { 
+            playerMovement.enabled = false;
+        }
+        gameManager.GameOver();
     }
 }
