@@ -1,3 +1,4 @@
+using System;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -16,6 +17,8 @@ public class BodyShiftController : MonoBehaviour
     private ShiftableRobot pendingRobot;
     private GameManager gameManager;
     private Health playerHealth;
+
+    public event Action OnBodyChanged;
     private void Awake()
     {
         currentRobot.GetComponent<PlayerBody>().SetController(this);
@@ -104,6 +107,8 @@ public class BodyShiftController : MonoBehaviour
 
         currentRobot = pendingRobot.gameObject;
         pendingRobot.TakeControl();
+
+        OnBodyChanged?.Invoke();
 
         targetRobot = null;
         pendingRobot = null;

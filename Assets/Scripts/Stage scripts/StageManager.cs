@@ -1,11 +1,17 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 public class StageManager : MonoBehaviour
 {
     [SerializeField] private int stage = 0;
     [SerializeField] private List<StageData> stages;
     private GameObject currentRoom;
     private BodyShiftController bodyShiftController;
+    public StageRoom CurrentRoom => currentRoom != null ? currentRoom.GetComponent<StageRoom>() : null;
+    public int CurrentStage => stage + 1;
+
+    public event Action OnStageChanged;
     private void Awake()
     {
         bodyShiftController = FindFirstObjectByType<BodyShiftController>();
@@ -68,6 +74,7 @@ public class StageManager : MonoBehaviour
                 }
         }
             stageroom.FinishSpawning();
+            OnStageChanged?.Invoke();
     }
     
 

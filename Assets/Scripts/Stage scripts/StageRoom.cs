@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System;
 public class StageRoom : MonoBehaviour
 {
     [SerializeField] private Transform playerSpawn;
@@ -8,6 +9,9 @@ public class StageRoom : MonoBehaviour
 
     private int remainingEnemies = 0;
     public Transform PlayerSpawn => playerSpawn;
+    public int RemainingEnemies => remainingEnemies;
+
+    public event Action OnEnemyCountChanged;
     public List<Transform> EnemySpawnPoints => spawnPoints;
 
     public void RegisterEnemy(Health enemyHealth)
@@ -16,12 +20,14 @@ public class StageRoom : MonoBehaviour
         {
             remainingEnemies++;
             enemyHealth.OnDeath += HandleEnemyDeath;
+            OnEnemyCountChanged?.Invoke();
         }
     }
     private void HandleEnemyDeath()
     {
         remainingEnemies--;
         Debug.Log("Remaining Enemies: " + remainingEnemies);
+        OnEnemyCountChanged?.Invoke();
         FinishSpawning();
     }
 

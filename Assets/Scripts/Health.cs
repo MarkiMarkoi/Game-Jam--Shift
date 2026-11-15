@@ -8,6 +8,10 @@ public class Health : MonoBehaviour
     private bool isDead;
 
     public event Action OnDeath;
+    public event Action OnHealthChanged;
+
+    public float CurrentHealth => currentHealth;
+    public float MaxHealth => maxHealth;
     private void Awake()
     {
         currentHealth = maxHealth;
@@ -20,6 +24,7 @@ public class Health : MonoBehaviour
             return;
         }
         currentHealth = Mathf.Max(currentHealth - damage, 0);
+        OnHealthChanged?.Invoke();
         //Für 0 erstmal destroyen
         if (currentHealth == 0)
         {
@@ -33,7 +38,7 @@ public class Health : MonoBehaviour
         float percentage = Mathf.Clamp01(healthPercentage);
 
         currentHealth = maxHealth * percentage;
-
+        OnHealthChanged?.Invoke();
         isDead = false;
     }
 }
