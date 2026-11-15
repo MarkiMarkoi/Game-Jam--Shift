@@ -6,6 +6,7 @@ public class StageManager : MonoBehaviour
 {
     [SerializeField] private int stage = 0;
     [SerializeField] private List<StageData> stages;
+    [SerializeField] private BossHealthUI bossHealthUI;
     private GameObject currentRoom;
     private BodyShiftController bodyShiftController;
     public StageRoom CurrentRoom => currentRoom != null ? currentRoom.GetComponent<StageRoom>() : null;
@@ -68,6 +69,11 @@ public class StageManager : MonoBehaviour
                         selectedPrefab = stageData.enemyPrefabs[selectedEnemy];
                     }
                     GameObject enemy = Instantiate(selectedPrefab, point.position, point.rotation, currentRoom.transform);
+                    Boss boss = enemy.GetComponent<Boss>();
+                    if (boss != null) 
+                    { 
+                        bossHealthUI.SetBoss(boss);
+                    }
                     Health enemyHealth = enemy.GetComponent<Health>();
                     stageroom.RegisterEnemy(enemyHealth);
                     availablePoints.RemoveAt(selectedPoint);
