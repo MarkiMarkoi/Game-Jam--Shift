@@ -10,11 +10,15 @@ public class ChargerAI : MonoBehaviour
         Charging,
         Recovery
     }
+
+    [SerializeField] private ChargeHitbox chargeHitBox;
+
     [SerializeField] private float chargeRange = 5f;
     [SerializeField] private float chargeSpeed = 12f;
     [SerializeField] private float chargeDuration = 0.5f;
     [SerializeField] private float windupDuration = 1f;
     [SerializeField] private float recoveryDuration = 1.5f;
+    [SerializeField] private float rotationSpeed = 10f;
 
     private float windupEndTime;
     private float chargeEndTime;
@@ -70,6 +74,13 @@ public class ChargerAI : MonoBehaviour
             {
                 agent.isStopped = false;
                 agent.SetDestination(bodyShiftController.CurrentPlayer.position);
+                Vector3 lookDirection = bodyShiftController.CurrentPlayer.position - transform.position;
+                lookDirection.y = 0f;
+                if (lookDirection.sqrMagnitude > 0.001f)
+                {
+                    Quaternion targetRotation = Quaternion.LookRotation(lookDirection);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+                }
             }
             else
             {
@@ -81,6 +92,13 @@ public class ChargerAI : MonoBehaviour
     }
     private void UpdateWindup()
     {
+        Vector3 lookDirection = bodyShiftController.CurrentPlayer.position - transform.position;
+        lookDirection.y = 0f;
+        if(lookDirection.sqrMagnitude > 0.001f)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(lookDirection);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+        }
         if (Time.time >= windupEndTime)
         {
             Debug.Log("Charging!");
@@ -88,6 +106,7 @@ public class ChargerAI : MonoBehaviour
             direction.y = 0f;
             chargeDirection = direction.normalized;
             chargeEndTime = Time.time + chargeDuration;
+            chargeHitBox.BeginCharge();
             currentState = ChargerState.Charging;
         }
     }
@@ -97,9 +116,15 @@ public class ChargerAI : MonoBehaviour
         {
             currentState = ChargerState.Recovery;
             recoveryEndTime = Time.time + recoveryDuration;
+            chargeHitBox.EndCharge();
             return;
         }
 
+        if (chargeDirection.sqrMagnitude > 0.001f)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(chargeDirection);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+        }
         agent.Move(chargeDirection * chargeSpeed * Time.deltaTime);
     }
     private void UpdateRecovery()

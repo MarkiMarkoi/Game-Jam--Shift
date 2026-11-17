@@ -10,7 +10,6 @@ public class BodyShiftController : MonoBehaviour
     [SerializeField] private InputActionReference shiftInput;
     [SerializeField] private GameObject currentRobot;
     [SerializeField] private CinemachineCamera playerCamera;
-
     public Transform CurrentPlayer => currentRobot.transform;
 
     private bool isShifting;

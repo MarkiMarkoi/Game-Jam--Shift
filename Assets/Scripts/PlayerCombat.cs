@@ -5,7 +5,7 @@ public class PlayerCombat : MonoBehaviour
 {
     [SerializeField] private InputActionReference shootInput;
     [SerializeField] private WeaponController weapon;
-
+    [SerializeField] private ChargeAbility chargeAbility;
     private void OnEnable()
     {
         shootInput.action.Enable();
@@ -17,9 +17,17 @@ public class PlayerCombat : MonoBehaviour
 
     private void Update()
     {
-        if (weapon != null && shootInput != null && shootInput.action.IsPressed()) 
+        if(shootInput == null)
+        {
+            return;
+        }
+        if(weapon != null && shootInput.action.IsPressed())
         {
             weapon.Shoot();
+        }
+        if (chargeAbility != null && shootInput.action.WasPressedThisFrame()) 
+        { 
+            chargeAbility.StartCharge();
         }
     }
 }

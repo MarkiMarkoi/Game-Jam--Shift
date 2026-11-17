@@ -1903,6 +1903,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shootInput: {fileID: 1120369429361536294, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   weapon: {fileID: 1460279672}
+  chargeAbility: {fileID: 0}
 --- !u!114 &1460279674
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2540,17 +2541,18 @@ MonoBehaviour:
     enemyPrefabs:
     - {fileID: 3033364738222120218, guid: fdd7ca0c5ce70b94e8fd0dab3f85b35c, type: 3}
     guarenteedEnemyPrefab:
-    - {fileID: 3033364738222120218, guid: 779964a4e79e9f34fa71c36bfa3ddbf9, type: 3}
+    - {fileID: 3033364738222120218, guid: 2a9243112161b50449b8ecab9f8a4bb3, type: 3}
+  - roomPrefab: {fileID: 8089114824726549309, guid: 0472309b9c052c54b876fa641ad67577, type: 3}
+    enemyCount: 4
+    enemyPrefabs:
+    - {fileID: 3033364738222120218, guid: 4831bac96b789544f983cf2b649325da, type: 3}
+    guarenteedEnemyPrefab:
+    - {fileID: 3033364738222120218, guid: a886ad963429e4542968784cf9b25d70, type: 3}
+    - {fileID: 3033364738222120218, guid: 937e4ac87904aca4a92c93eaa8082dd4, type: 3}
   - roomPrefab: {fileID: 8089114824726549309, guid: 819d631a0100f8c45b83f0f2431e42b9, type: 3}
     enemyCount: 1
     enemyPrefabs:
     - {fileID: 3033364738222120218, guid: b3f4c231a35cec84fb7270580105b4ad, type: 3}
-    guarenteedEnemyPrefab: []
-  - roomPrefab: {fileID: 8089114824726549309, guid: 0472309b9c052c54b876fa641ad67577, type: 3}
-    enemyCount: 4
-    enemyPrefabs:
-    - {fileID: 3033364738222120218, guid: 69778e199ffd6694fa31711bb16ba918, type: 3}
-    - {fileID: 3033364738222120218, guid: 4831bac96b789544f983cf2b649325da, type: 3}
     guarenteedEnemyPrefab: []
   bossHealthUI: {fileID: 2004021794}
 --- !u!4 &1997178635

@@ -5,19 +5,18 @@ using UnityEngine.AI;
 public class ShiftableRobot : MonoBehaviour
 {
     private Health health;
-    private EnemyAI enemyAI;
     private NavMeshAgent navMeshAgent;
     private bool isAvailableForShift;
 
     public PlayerBody playerBody;
 
     [SerializeField] private float takeoverWindow = 5f;
+    [SerializeField] private Behaviour enemyBehaviour;
     public bool IsAvailableForShift => isAvailableForShift;
     private void Awake()
     {
         playerBody = GetComponent<PlayerBody>();
         health = GetComponent<Health>();
-        enemyAI = GetComponent<EnemyAI>();
         navMeshAgent = GetComponent<NavMeshAgent>();
     }
     private void OnEnable()
@@ -36,7 +35,10 @@ public class ShiftableRobot : MonoBehaviour
             return;
         }
         navMeshAgent.isStopped = true;
-        enemyAI.enabled = false;
+        if (enemyBehaviour != null) 
+        {
+            enemyBehaviour.enabled = false;
+        }
         navMeshAgent.enabled = false;
         isAvailableForShift = true;
         StartCoroutine(DespawnAfterDelay());
@@ -61,7 +63,10 @@ public class ShiftableRobot : MonoBehaviour
         isAvailableForShift = false;
 
         navMeshAgent.enabled = false;
-        enemyAI.enabled = false;
+        if (enemyBehaviour != null)
+        {
+            enemyBehaviour.enabled = false;
+        }
         health.Revive(0.5f);
         GetComponent<CharacterController>().enabled = true;
         GetComponent <Movement>().enabled = true;

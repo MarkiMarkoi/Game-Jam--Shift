@@ -296,6 +296,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerBody: {fileID: 0}
   takeoverWindow: 3
+  enemyBehaviour: {fileID: 3476907511357985312}
 --- !u!114 &1075579800430083025
 MonoBehaviour:
   m_ObjectHideFlags: 0

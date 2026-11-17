@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 public class EnemyHealthUI : MonoBehaviour
@@ -35,7 +34,7 @@ public class EnemyHealthUI : MonoBehaviour
     }
     private void HandleBodyChanged()
     {
-        if (playerBody != null)
+        if (playerBody != null && playerBody.Controller != null)
         {
             healthSlider.gameObject.SetActive(false);
         }
