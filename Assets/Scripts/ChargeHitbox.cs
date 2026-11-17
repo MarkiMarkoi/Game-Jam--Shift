@@ -36,12 +36,14 @@ public class ChargeHitbox : MonoBehaviour
 
     private void TryHit(Collider other)
     {
-        Debug.Log("Hitbox berührt : " + other.name);
         if (!isActive) 
         {
             return;
         }
-        Debug.Log("Hitbox aktiv, Ziel: " + other.name);
+        if (other.gameObject.layer == LayerMask.NameToLayer("ShiftTrigger"))
+        {
+            return;
+        }
         Health health = other.GetComponentInParent<Health>();
         if(health == null)
         {
@@ -50,16 +52,13 @@ public class ChargeHitbox : MonoBehaviour
         PlayerBody targetBody = health.GetComponent<PlayerBody>();
         if (targetBody == null || ownerBody == null)
         {
-            Debug.LogWarning("PlayerBody fehlt!");
             return;
         }
-        Debug.Log($"Owner ist Spieler: {ownerBody.Controller != null}, " + $"Ziel ist Spieler: {targetBody.Controller != null}");
         if (health == ownerBody.GetComponent<Health>())
         {
             return ;
         }
-
-        if((ownerBody.Controller != null) == (targetBody.Controller != null))
+        if ((ownerBody.Controller != null) == (targetBody.Controller != null))
         {
             return;
         }

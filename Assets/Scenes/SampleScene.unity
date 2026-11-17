@@ -2537,7 +2537,7 @@ MonoBehaviour:
   stage: 0
   stages:
   - roomPrefab: {fileID: 8089114824726549309, guid: 0472309b9c052c54b876fa641ad67577, type: 3}
-    enemyCount: 2
+    enemyCount: 3
     enemyPrefabs:
     - {fileID: 3033364738222120218, guid: fdd7ca0c5ce70b94e8fd0dab3f85b35c, type: 3}
     guarenteedEnemyPrefab:
